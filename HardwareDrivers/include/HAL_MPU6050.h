@@ -28,8 +28,8 @@
  */
 
 /* Define to prevent recursive inclusion*/
-#ifndef __HAL_MPU6050_H
-#define __HAL_MPU6050_H
+#ifndef _HAL_MPU6050_H_
+#define _HAL_MPU6050_H_
 
 #ifdef __cplusplus
 extern "C" {

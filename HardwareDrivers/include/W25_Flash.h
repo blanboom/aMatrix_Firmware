@@ -1,5 +1,5 @@
-#ifndef __SPI_FLASH_H
-#define __SPI_FLASH_H
+#ifndef _SPI_FLASH_H_
+#define _SPI_FLASH_H_
 
 #include "stm32f10x.h"
 

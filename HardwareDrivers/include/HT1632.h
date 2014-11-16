@@ -5,8 +5,8 @@
  *      Author: maxz
  */
 
-#ifndef HT1632_H_
-#define HT1632_H_
+#ifndef _HT1632_H_
+#define _HT1632_H_
 
 #define HT1632_ID_CMD 4		// 命令
 #define HT1632_ID_RD  6		// 读
