@@ -63,7 +63,7 @@ void RTCTime_SetCalenderTime(struct tm t)
 // 将 tm 格式 时间日期转换为 time_t 格式
 time_t RTCTime_ConvCalendarToUnix(struct tm t)
 {
-	t.tm_year -=1900;
+	t.tm_year -= 1900;
 	return mktime(&t);
 }
 
