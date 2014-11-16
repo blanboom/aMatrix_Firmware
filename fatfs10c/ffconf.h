@@ -2,7 +2,8 @@
 /  FatFs - FAT file system module configuration file  R0.10c (C)ChaN, 2014
 /---------------------------------------------------------------------------*/
 
-#define _FFCONF 80376	/* Revision ID */
+/* Revision ID */
+#define _FFCONF 80376
 
 /*---------------------------------------------------------------------------/
 / Functions and Buffer Configurations
@@ -65,7 +66,7 @@
 / Locale and Namespace Configurations
 /---------------------------------------------------------------------------*/
 
-#define _CODE_PAGE	932
+#define _CODE_PAGE	936
 /* This option specifies the OEM code page to be used on the target system.
 /  Incorrect setting of the code page can cause a file open failure.
 /
@@ -97,7 +98,7 @@
 /   1    - ASCII (No extended character. Valid for only non-LFN configuration.) */
 
 
-#define	_USE_LFN	0
+#define	_USE_LFN	2
 #define	_MAX_LFN	255
 /* The _USE_LFN option switches the LFN feature.
 /

@@ -14,8 +14,8 @@
 /
 /----------------------------------------------------------------------------*/
 
-#ifndef _FATFS
-#define _FATFS	80376	/* Revision ID */
+#ifndef _FATFS /* Revision ID */
+#define _FATFS	80376
 
 #ifdef __cplusplus
 extern "C" {

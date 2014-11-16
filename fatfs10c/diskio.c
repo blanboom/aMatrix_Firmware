@@ -8,14 +8,39 @@
 /*-----------------------------------------------------------------------*/
 
 #include "diskio.h"		/* FatFs lower layer API */
-#include "usbdisk.h"	/* Example: USB drive control */
-#include "atadrive.h"	/* Example: ATA drive control */
-#include "sdcard.h"		/* Example: MMC/SDC contorl */
+#include "W25_Flash.h"
+#include "RTC_Time.h"
 
 /* Definitions of physical drive number for each drive */
-#define ATA		0	/* Example: Map ATA drive to drive number 0 */
-#define MMC		1	/* Example: Map MMC/SD card to drive number 1 */
-#define USB		2	/* Example: Map USB drive to drive number 2 */
+#define SPI_FLASH		0
+
+struct tm currentTime;
+time_t currentUnixTime;
+
+
+DWORD get_fattime(void)
+{
+	DWORD retVal = 0;
+	DWORD temp = 0;
+
+	time(&currentUnixTime);
+	currentTime = RTCTime_ConvUnixToCalendar(currentUnixTime);
+
+	temp = currentTime.tm_year - 1980;
+	retVal = (temp << 25);
+	temp = currentTime.tm_mon;
+	retVal |= (temp << 21);
+	temp = currentTime.tm_mday;
+	retVal |= (temp << 16);
+	temp = currentTime.tm_hour;
+	retVal |= (temp << 11);
+	temp = currentTime.tm_min;
+	retVal |= (temp << 5);
+	temp = currentTime.tm_sec >> 2;
+	retVal |= (temp);
+
+	return retVal;
+}
 
 
 /*-----------------------------------------------------------------------*/
@@ -26,30 +51,9 @@ DSTATUS disk_status (
 	BYTE pdrv		/* Physical drive nmuber to identify the drive */
 )
 {
-	DSTATUS stat;
-	int result;
-
 	switch (pdrv) {
-	case ATA :
-		result = ATA_disk_status();
-
-		// translate the reslut code here
-
-		return stat;
-
-	case MMC :
-		result = MMC_disk_status();
-
-		// translate the reslut code here
-
-		return stat;
-
-	case USB :
-		result = USB_disk_status();
-
-		// translate the reslut code here
-
-		return stat;
+	case SPI_FLASH :
+		return RES_OK;
 	}
 	return STA_NOINIT;
 }
@@ -64,30 +68,21 @@ DSTATUS disk_initialize (
 	BYTE pdrv				/* Physical drive nmuber to identify the drive */
 )
 {
-	DSTATUS stat;
 	int result;
 
 	switch (pdrv) {
-	case ATA :
-		result = ATA_disk_initialize();
+	case SPI_FLASH :
+		result = SPI_FLASH_Init();
 
-		// translate the reslut code here
+		if(result == 0)
+		{
+			return RES_OK;
+		}
+		else
+		{
+			return STA_NOINIT;
+		}
 
-		return stat;
-
-	case MMC :
-		result = MMC_disk_initialize();
-
-		// translate the reslut code here
-
-		return stat;
-
-	case USB :
-		result = USB_disk_initialize();
-
-		// translate the reslut code here
-
-		return stat;
 	}
 	return STA_NOINIT;
 }
@@ -109,31 +104,16 @@ DRESULT disk_read (
 	int result;
 
 	switch (pdrv) {
-	case ATA :
-		// translate the arguments here
-
-		result = ATA_disk_read(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case MMC :
-		// translate the arguments here
-
-		result = MMC_disk_read(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case USB :
-		// translate the arguments here
-
-		result = USB_disk_read(buff, sector, count);
-
-		// translate the reslut code here
-
+	case SPI_FLASH :
+		result = SPI_FLASH_BufferRead(buff, sector*512, count*512);
+		if(result == 0)
+		{
+			return RES_OK;
+		}
+		else
+		{
+			return RES_ERROR;
+		}
 		return res;
 	}
 
@@ -158,31 +138,16 @@ DRESULT disk_write (
 	int result;
 
 	switch (pdrv) {
-	case ATA :
-		// translate the arguments here
-
-		result = ATA_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case MMC :
-		// translate the arguments here
-
-		result = MMC_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
-		return res;
-
-	case USB :
-		// translate the arguments here
-
-		result = USB_disk_write(buff, sector, count);
-
-		// translate the reslut code here
-
+	case SPI_FLASH :
+		result = SPI_FLASH_BufferWrite((uint8_t*)buff, sector*512, count*512);
+		if(result == 0)
+		{
+			return RES_OK;
+		}
+		else
+		{
+			return RES_ERROR;
+		}
 		return res;
 	}
 
@@ -206,21 +171,9 @@ DRESULT disk_ioctl (
 	int result;
 
 	switch (pdrv) {
-	case ATA :
+	case SPI_FLASH :
 
 		// Process of the command for the ATA drive
-
-		return res;
-
-	case MMC :
-
-		// Process of the command for the MMC/SD card
-
-		return res;
-
-	case USB :
-
-		// Process of the command the USB drive
 
 		return res;
 	}

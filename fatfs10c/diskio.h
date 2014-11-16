@@ -10,7 +10,7 @@ extern "C" {
 #endif
 
 #define _USE_WRITE	1	/* 1: Enable disk_write function */
-#define _USE_IOCTL	1	/* 1: Enable disk_ioctl fucntion */
+#define _USE_IOCTL	0	/* 1: Enable disk_ioctl fucntion */
 
 #include "integer.h"
 
@@ -37,6 +37,8 @@ DSTATUS disk_status (BYTE pdrv);
 DRESULT disk_read (BYTE pdrv, BYTE* buff, DWORD sector, UINT count);
 DRESULT disk_write (BYTE pdrv, const BYTE* buff, DWORD sector, UINT count);
 DRESULT disk_ioctl (BYTE pdrv, BYTE cmd, void* buff);
+
+DWORD get_fattime(void);
 
 
 /* Disk Status Bits (DSTATUS) */

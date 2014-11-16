@@ -1,7 +1,5 @@
 #include "W25_Flash.h"
 
-
-
 /* Private typedef -----------------------------------------------------------*/
 //#define SPI_FLASH_PageSize      4096
 #define SPI_FLASH_PageSize      256
@@ -36,7 +34,7 @@
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_Init(void)
+uint8_t SPI_FLASH_Init(void)
 {
   SPI_InitTypeDef  SPI_InitStructure;
   GPIO_InitTypeDef GPIO_InitStructure;
@@ -89,6 +87,8 @@ void SPI_FLASH_Init(void)
 
   /* Enable SPI_FLASH_SPI  */
   SPI_Cmd(SPI_FLASH_SPI, ENABLE);
+
+  return 0;
 }
 /*******************************************************************************
 * Function Name  : SPI_FLASH_SectorErase
@@ -205,7 +205,7 @@ void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
+uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u32 NumByteToWrite)
 {
   u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
 
@@ -274,6 +274,7 @@ void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
       }
     }
   }
+  return 0;
 }
 
 /*******************************************************************************
@@ -286,7 +287,7 @@ void SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
+uint8_t SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u32 NumByteToRead)
 {
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
@@ -311,6 +312,8 @@ void SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 
   /* Deselect the FLASH: Chip Select high */
   SPI_FLASH_CS_HIGH();
+
+  return 0;
 }
 
 /*******************************************************************************

@@ -5,9 +5,7 @@
 #include "MPU6050.h"
 #include "W25_Flash.h"
 #include "RTC_Time.h"
-
-struct tm currentTime;
-time_t currentUnixTime;
+#include "ff.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -16,6 +14,11 @@ time_t currentUnixTime;
 
 int main(int argc, char* argv[])
 {
+//    FATFS fs;      /* File system object (volume work area) */
+//    FIL fil;       /* File object */
+//    FRESULT res;   /* API result code */
+//    UINT bw;       /* Bytes written */
+
 	trace_printf("aMatrix v%s\n", version);
     trace_printf("System clock: %uHz\n", SystemCoreClock);
 
@@ -23,6 +26,21 @@ int main(int argc, char* argv[])
     MPU6050_Initialize();  trace_printf("MPU6050 Init: %d\n", MPU6050_TestConnection());
     SPI_FLASH_Init();
     RTCTime_Init();
+
+    // FATFS 测试
+//    /* Register work area */
+//	f_mount(&fs, "", 0);
+//	/* Create a file as new */
+//	res = f_open(&fil, "hello.txt", FA_CREATE_NEW | FA_WRITE);
+//	if (res) trace_printf("NEW FILE OK\n");
+//	/* Write a message */
+//	f_write(&fil, "Hello, World!\r\n", 15, &bw);
+//	if (bw != 15) trace_printf("BWBW\n");
+//	/* Close the file */
+//	f_close(&fil);
+//	/* Unregister work area */
+//	f_mount(0, "", 0);
+//	trace_printf("ALL OK!");
 
 	while (1)
 	{
