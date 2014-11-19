@@ -43,7 +43,7 @@
 /  2: Enable with LF-CRLF conversion. */
 
 
-#define	_USE_MKFS		0
+#define	_USE_MKFS		1
 /* This option switches f_mkfs() function. (0:Disable or 1:Enable)
 /  To enable it, also _FS_READONLY need to be set to 0. */
 
@@ -66,7 +66,7 @@
 / Locale and Namespace Configurations
 /---------------------------------------------------------------------------*/
 
-#define _CODE_PAGE	936
+#define _CODE_PAGE	1
 /* This option specifies the OEM code page to be used on the target system.
 /  Incorrect setting of the code page can cause a file open failure.
 /
@@ -98,8 +98,8 @@
 /   1    - ASCII (No extended character. Valid for only non-LFN configuration.) */
 
 
-#define	_USE_LFN	2
-#define	_MAX_LFN	255
+#define	_USE_LFN	0
+#define	_MAX_LFN	64
 /* The _USE_LFN option switches the LFN feature.
 /
 /   0: Disable LFN feature. _MAX_LFN has no effect.
@@ -199,8 +199,8 @@
 /*---------------------------------------------------------------------------/
 / System Configurations
 /---------------------------------------------------------------------------*/
-
-#define _FS_NORTC	0
+// TODO: 调试成功后打开 RTC
+#define _FS_NORTC	1
 #define _NORTC_MON	11
 #define _NORTC_MDAY	9
 #define _NORTC_YEAR	2014

@@ -10,6 +10,12 @@
 #include "diskio.h"		/* FatFs lower layer API */
 #include "W25_Flash.h"
 #include "RTC_Time.h"
+#include <stdio.h>
+#include "diag/Trace.h"
+
+#ifdef DEBUG
+uint32_t counter;
+#endif
 
 /* Definitions of physical drive number for each drive */
 #define SPI_FLASH		0
@@ -38,6 +44,8 @@ DWORD get_fattime(void)
 	retVal |= (temp << 5);
 	temp = currentTime.tm_sec >> 2;
 	retVal |= (temp);
+
+	trace_printf( "\r\n 获取时间 %d\n", retVal );
 
 	return retVal;
 }
@@ -73,6 +81,7 @@ DSTATUS disk_initialize (
 	switch (pdrv) {
 	case SPI_FLASH :
 		result = SPI_FLASH_Init();
+		trace_printf( "Flash 初始化 \n");
 
 		if(result == 0)
 		{
@@ -106,6 +115,14 @@ DRESULT disk_read (
 	switch (pdrv) {
 	case SPI_FLASH :
 		result = SPI_FLASH_BufferRead(buff, sector*512, count*512);
+#ifdef DEBUG_
+		trace_printf("R_Sector:%d_Num:%d_", sector, count);
+		for(counter = 0; counter < count*512; counter++)
+		{
+			trace_putchar(buff[counter]);
+		}
+		trace_printf("\n");
+#endif
 		if(result == 0)
 		{
 			return RES_OK;
@@ -140,6 +157,14 @@ DRESULT disk_write (
 	switch (pdrv) {
 	case SPI_FLASH :
 		result = SPI_FLASH_BufferWrite((uint8_t*)buff, sector*512, count*512);
+#ifdef DEBUG_
+		trace_printf("W_Sector:%d_Num:%d_", sector, count);
+		for(counter = 0; counter < count*512; counter++)
+		{
+			trace_putchar(buff[counter]);
+		}
+		trace_printf("\n");
+#endif
 		if(result == 0)
 		{
 			return RES_OK;
@@ -168,12 +193,35 @@ DRESULT disk_ioctl (
 )
 {
 	DRESULT res;
-	int result;
 
-	switch (pdrv) {
+	switch (pdrv)
+	{
 	case SPI_FLASH :
-
-		// Process of the command for the ATA drive
+		switch (cmd)
+		{
+			case CTRL_SYNC:
+				trace_printf("IOCTRL_SYNC\n");
+				res = RES_OK;
+				break;
+			case GET_SECTOR_COUNT:
+				trace_printf("IOCTRL_GET_SECTOR_COUNT\n");
+				*(DWORD * )buff = 32768;
+				res = RES_OK;
+				break;
+			case GET_SECTOR_SIZE:
+				trace_printf("IOCTRL_GET_SECTOR_SIZE\n");
+				*(WORD * )buff = 512;
+				res = RES_OK;
+				break;
+			case GET_BLOCK_SIZE:
+				trace_printf("IOCTRL_GET_BLOCK_SIZE\n");
+				*(DWORD * )buff = 128;
+				res = RES_OK;
+				break;
+			default:
+				trace_printf("IOCTRL_ERROR\n");
+				res = RES_PARERR;
+		}
 
 		return res;
 	}
