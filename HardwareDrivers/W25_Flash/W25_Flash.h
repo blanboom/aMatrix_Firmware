@@ -2,6 +2,7 @@
 #define _SPI_FLASH_H_
 
 #include "stm32f10x.h"
+#include "stm32f10x_conf.h"
 
 #define SPI_FLASH_SPI                           SPI1
 #define SPI_FLASH_SPI_CLK                       RCC_APB2Periph_SPI1
@@ -21,8 +22,8 @@ uint8_t SPI_FLASH_Init(void);
 void SPI_FLASH_SectorErase(u32 SectorAddr);
 void SPI_FLASH_BulkErase(void);
 void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
-uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, uint64_t NumByteToWrite);
-uint8_t SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, uint64_t NumByteToRead);
+uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite);
+uint8_t SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead);
 u32 SPI_FLASH_ReadID(void);
 u32 SPI_FLASH_ReadDeviceID(void);
 void SPI_FLASH_StartReadSequence(u32 ReadAddr);

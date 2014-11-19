@@ -114,15 +114,13 @@ DRESULT disk_read (
 
 	switch (pdrv) {
 	case SPI_FLASH :
-		result = SPI_FLASH_BufferRead(buff, sector*512, count*512);
-#ifdef DEBUG_
-		trace_printf("R_Sector:%d_Num:%d_", sector, count);
-		for(counter = 0; counter < count*512; counter++)
+		for(;count>0;count--)
 		{
-			trace_putchar(buff[counter]);
+			SPI_FLASH_BufferRead(buff,sector*4096,4096);
+			sector++;
+			buff += 512;
 		}
-		trace_printf("\n");
-#endif
+		result = RES_OK;
 		if(result == 0)
 		{
 			return RES_OK;
@@ -156,15 +154,14 @@ DRESULT disk_write (
 
 	switch (pdrv) {
 	case SPI_FLASH :
-		result = SPI_FLASH_BufferWrite((uint8_t*)buff, sector*512, count*512);
-#ifdef DEBUG_
-		trace_printf("W_Sector:%d_Num:%d_", sector, count);
-		for(counter = 0; counter < count*512; counter++)
+		for(;count>0;count--)
 		{
-			trace_putchar(buff[counter]);
+			SPI_FLASH_SectorErase(sector*4096);
+			SPI_FLASH_BufferWrite((BYTE*)buff,sector*4096, 4096);
+			sector++;
+			buff += 512;
 		}
-		trace_printf("\n");
-#endif
+		result = RES_OK;
 		if(result == 0)
 		{
 			return RES_OK;
@@ -205,17 +202,17 @@ DRESULT disk_ioctl (
 				break;
 			case GET_SECTOR_COUNT:
 				trace_printf("IOCTRL_GET_SECTOR_COUNT\n");
-				*(DWORD * )buff = 32768;
+				*(DWORD * )buff = 4096;
 				res = RES_OK;
 				break;
 			case GET_SECTOR_SIZE:
 				trace_printf("IOCTRL_GET_SECTOR_SIZE\n");
-				*(WORD * )buff = 512;
+				*(WORD * )buff = 4096;
 				res = RES_OK;
 				break;
 			case GET_BLOCK_SIZE:
 				trace_printf("IOCTRL_GET_BLOCK_SIZE\n");
-				*(DWORD * )buff = 128;
+				*(DWORD * )buff = 16;
 				res = RES_OK;
 				break;
 			default:

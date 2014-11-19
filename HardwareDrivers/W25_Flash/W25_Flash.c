@@ -205,10 +205,9 @@ void SPI_FLASH_PageWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 * Output         : None
 * Return         : None
 *******************************************************************************/
-uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, uint64_t NumByteToWrite)
+uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, u16 NumByteToWrite)
 {
-  uint64_t NumOfPage = 0;
-  u8 NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
+  u8 NumOfPage = 0, NumOfSingle = 0, Addr = 0, count = 0, temp = 0;
 
   Addr = WriteAddr % SPI_FLASH_PageSize;
   count = SPI_FLASH_PageSize - Addr;
@@ -288,7 +287,7 @@ uint8_t SPI_FLASH_BufferWrite(u8* pBuffer, u32 WriteAddr, uint64_t NumByteToWrit
 * Output         : None
 * Return         : None
 *******************************************************************************/
-uint8_t SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, uint64_t NumByteToRead)
+uint8_t SPI_FLASH_BufferRead(u8* pBuffer, u32 ReadAddr, u16 NumByteToRead)
 {
   /* Select the FLASH: Chip Select low */
   SPI_FLASH_CS_LOW();
