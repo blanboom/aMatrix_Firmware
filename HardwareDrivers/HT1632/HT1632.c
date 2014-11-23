@@ -9,7 +9,7 @@
 
 #include <stdio.h>
 #include "diag/Trace.h"
-#include "stm32f10x.h"
+#include "stm32f10x_conf.h"
 #include "HT1632.h"
 
 #define HT1632_DATA_PIN           GPIO_Pin_2
