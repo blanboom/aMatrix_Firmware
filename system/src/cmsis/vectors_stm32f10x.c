@@ -6,8 +6,12 @@
 // ----------------------------------------------------------------------------
 
 #include "cortexm/ExceptionHandlers.h"
+#include "stm32f10x_it.h"
 
 // ----------------------------------------------------------------------------
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
 
 void __attribute__((weak))
 Default_Handler(void);
@@ -887,3 +891,5 @@ Default_Handler(void)
 }
 
 // ----------------------------------------------------------------------------
+
+#pragma GCC diagnostic pop

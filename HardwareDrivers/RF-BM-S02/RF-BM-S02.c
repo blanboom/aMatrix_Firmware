@@ -73,4 +73,10 @@ int RF_BM_S02_Printf(const char* format, ...)
 
 void RF_BM_S02_ISR(void)
 {
+	uint8_t c;
+	if(USART_GetITStatus(USART2, USART_IT_RXNE) != RESET)
+	{
+	    c=USART2->DR;
+	  	printf("%c",c);    //将接受到的数据直接返回打印
+	}
 }

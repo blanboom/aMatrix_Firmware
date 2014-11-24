@@ -8,8 +8,9 @@
 #include "ff.h"
 #include "diskio.h"
 #include "RF-BM-S02.h"
-
-
+#include "lua.h"
+#include "lauxlib.h"
+#include "lualib.h"
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
@@ -19,6 +20,7 @@
 
 int main(int argc, char* argv[])
 {
+	lua_State *L;
 	trace_printf("aMatrix v%s\n", version);
     trace_printf("System clock: %uHz\n", SystemCoreClock);
 
@@ -26,6 +28,7 @@ int main(int argc, char* argv[])
     MPU6050_I2C_Init();
     MPU6050_Initialize();  trace_printf("MPU6050 Init: %d\n", MPU6050_TestConnection());
     RTCTime_Init();
+
 
 	while (1)
 	{
