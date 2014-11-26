@@ -24,6 +24,8 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
 #include "RF-BM-S02.h"
+#include "USART1.h"
+#include "USR-WIFI232.h"
 
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
@@ -146,7 +148,17 @@ void SysTick_Handler(void)
 
 void USART2_IRQHandler(void)
 {
-	void RF_BM_S02_ISR(void);
+	RF_BM_S02_ISR();
+}
+
+void USART3_IRQHandler(void)
+{
+	WIFI_ISR();
+}
+
+void USART1_IRQHandler(void)
+{
+	USART1_ISR();
 }
 
 /**

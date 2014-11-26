@@ -5,8 +5,8 @@
  *      Author: maxz
  */
 
-#ifndef RF_BM_S02_RF_BM_S02_H_
-#define RF_BM_S02_RF_BM_S02_H_
+#ifndef RF_BM_S02_H_
+#define RF_BM_S02_H_
 
 #include "stm32f10x_conf.h"
 
